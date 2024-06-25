@@ -7,8 +7,17 @@ EagerLoadingBooksWithAuthors();
 void EagerLoadingBooksWithAuthors()
 {
     using PubContext context = new();
+    //var authors = context.Authors
+    //    .Include(a => a.Books).ToList();
+
+    var pubStartDate = new DateOnly(2020, 1, 1);
+
     var authors = context.Authors
-        .Include(a => a.Books).ToList();
+        .Include(a => a.Books
+            .Where(b => b.PublishDate >= pubStartDate)
+            .OrderBy(b => b.Title))
+        .ToList();
+
     authors.ForEach(author =>
     {
         Console.WriteLine($"{author.FirstName} {author.LastName}");
