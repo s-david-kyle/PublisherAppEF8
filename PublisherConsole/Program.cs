@@ -1,32 +1,79 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PublisherData;
-using PublisherDomain;
 
-EagerLoadingBooksWithAuthors();
+Console.WriteLine("Hello Publisher!");
 
-void EagerLoadingBooksWithAuthors()
+PubContext _context = new();
+
+RetrieveAnArtistWithTheirCovers();
+
+void RetrieveAnArtistWithTheirCovers()
 {
-    using PubContext context = new();
-    //var authors = context.Authors
-    //    .Include(a => a.Books).ToList();
-
-    var pubStartDate = new DateOnly(2020, 1, 1);
-
-    var authors = context.Authors
-        .Include(a => a.Books
-            .Where(b => b.PublishDate >= pubStartDate)
-            .OrderBy(b => b.Title))
-        .ToList();
-
-    authors.ForEach(author =>
-    {
-        Console.WriteLine($"{author.FirstName} {author.LastName}");
-        author.Books.ForEach(book =>
-        {
-            Console.WriteLine($"\t{book.Title} {book.PublishDate} {book.BasePrice}");
-        });
-    });
+    var artistWithCovers = _context.Artists
+        .Include(a => a.Covers)
+        .FirstOrDefault(a => a.ArtistId == 1);
 }
+
+
+
+
+#region old code
+//ConnecNewArtistAndCoverObjects();
+//void ConnecNewArtistAndCoverObjects()
+//{
+//    var newArtist = new Artist { FirstName = "Kir", LastName = "Talmage" };
+//    var newCover = new Cover { DesignIdeas = "We like birds!", DigitalOnly = false };
+//    newCover.Artists.Add(newArtist);
+//    _context.Covers.Add(newCover);
+//    _context.SaveChanges();
+//}
+
+
+
+
+//ConnectExistingArtistAndCoverObjects();
+//void ConnectExistingArtistAndCoverObjects()
+//{
+//    using PubContext _context = new();
+
+//    var artistA = _context.Artists.Find(1);
+//    var artistB = _context.Artists.Find(2);
+//    var coverA = new Cover { DesignIdeas = "Author has provided a cover", DigitalOnly = false };
+//    coverA.Artists.Add(artistA);
+//    coverA.Artists.Add(artistB);
+//    _context.Covers.Add(coverA);
+//    _context.SaveChanges();
+//}
+
+
+
+
+
+//EagerLoadingBooksWithAuthors();
+
+//void EagerLoadingBooksWithAuthors()
+//{
+//    using PubContext context = new();
+//    //var authors = context.Authors
+//    //    .Include(a => a.Books).ToList();
+
+//    var pubStartDate = new DateOnly(2020, 1, 1);
+
+//    var authors = context.Authors
+//        .Include(a => a.Books
+//            .Where(b => b.PublishDate >= pubStartDate)
+//            .OrderBy(b => b.Title))
+//        .ToList();
+
+//    authors.ForEach(author =>
+//    {
+//        Console.WriteLine($"{author.FirstName} {author.LastName}");
+//        author.Books.ForEach(book =>
+//        {
+//            Console.WriteLine($"\t{book.Title} {book.PublishDate} {book.BasePrice}");
+//        });
+//    });
+//}
 
 
 //GetAuthors();
@@ -76,10 +123,11 @@ void EagerLoadingBooksWithAuthors()
 //    }
 //}
 
-void AddAuthor()
-{
-    using PubContext context = new();
-    var author = new Author { FirstName = "Josie", LastName = "Newf" };
-    context.Authors.Add(author);
-    context.SaveChanges();
-}
+//void AddAuthor()
+//{
+//    using PubContext context = new();
+//    var author = new Author { FirstName = "Josie", LastName = "Newf" };
+//    context.Authors.Add(author);
+//    context.SaveChanges();
+//}
+#endregion

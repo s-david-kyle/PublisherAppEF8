@@ -25,5 +25,17 @@ public partial class PubContext : DbContext
             new Book { BookId = 6, Title = "The Book of Jack 2", PublishDate = new DateOnly(2022, 10, 12), BasePrice = 29.99m, AuthorId = 3 },
             new Book { BookId = 7, Title = "The Book of Sam", PublishDate = new DateOnly(2022, 10, 12), BasePrice = 29.99m, AuthorId = 6 }
             );
+
+        var someArtists = new Artist[]{
+            new Artist {ArtistId = 1, FirstName = "Pablo", LastName="Picasso"},
+            new Artist {ArtistId = 2, FirstName = "Dee", LastName="Bell"},
+            new Artist {ArtistId = 3, FirstName ="Katharine", LastName="Kuharic"} };
+        modelBuilder.Entity<Artist>().HasData(someArtists);
+
+        var someCovers = new Cover[]{
+            new Cover {CoverId = 1, DesignIdeas="How about a left hand in the dark?", DigitalOnly=false},
+            new Cover {CoverId = 2, DesignIdeas= "Should we put a clock?", DigitalOnly=true},
+            new Cover {CoverId = 3, DesignIdeas="A big ear in the clouds?", DigitalOnly = false}};
+        modelBuilder.Entity<Cover>().HasData(someCovers);
     }
 }
