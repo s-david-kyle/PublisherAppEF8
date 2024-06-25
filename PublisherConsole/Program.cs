@@ -1,17 +1,37 @@
-﻿using PublisherData;
+﻿using Microsoft.EntityFrameworkCore;
+using PublisherData;
 using PublisherDomain;
 
-GetAuthors();
+EagerLoadingBooksWithAuthors();
 
-void GetAuthors()
+void EagerLoadingBooksWithAuthors()
 {
     using PubContext context = new();
-    var authors = context.Authors.ToList();
-    foreach (var author in authors)
+    var authors = context.Authors
+        .Include(a => a.Books).ToList();
+    authors.ForEach(author =>
     {
         Console.WriteLine($"{author.FirstName} {author.LastName}");
-    }
+        author.Books.ForEach(book =>
+        {
+            Console.WriteLine($"\t{book.Title} {book.PublishDate} {book.BasePrice}");
+        });
+    });
 }
+
+
+//GetAuthors();
+
+//void GetAuthors()
+//{
+//    using PubContext context = new();
+//    var authors = context.Authors.ToList();
+
+//foreach (var author in authors)
+//{
+//    Console.WriteLine($"{author.FirstName} {author.LastName}");
+//}
+//}
 
 
 //using (PubContext context = new())
