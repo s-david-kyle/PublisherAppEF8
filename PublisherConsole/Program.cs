@@ -5,19 +5,57 @@ Console.WriteLine("Hello Publisher!");
 
 PubContext _context = new();
 
-RetrieveAnArtistWithTheirCovers();
-
-void RetrieveAnArtistWithTheirCovers()
+GetAnAuthorWithTheirBooksWithCoversWithArtists();
+void GetAnAuthorWithTheirBooksWithCoversWithArtists()
 {
-    var artistWithCovers = _context.Artists
-        .Include(a => a.Covers)
-        .FirstOrDefault(a => a.ArtistId == 1);
+    var author = _context.Authors.AsNoTracking()
+        .Include(a => a.Books)
+        .ThenInclude(b => b.Cover)
+        .ThenInclude(c => c.Artists)
+        .FirstOrDefault(a => a.AuthorId == 1);
+
+    Console.WriteLine($"{author.FirstName} {author.LastName}");
+    author.Books.ForEach(book =>
+    {
+        Console.WriteLine($"\t{book.Title} {book.PublishDate} {book.BasePrice}");
+        Console.WriteLine($"\t\t{book.Cover.DesignIdeas}");
+        book.Cover.Artists.ForEach(artist =>
+        {
+            Console.WriteLine($"\t\t{artist.FirstName} {artist.LastName}");
+        });
+    });
 }
 
 
 
-
 #region old code
+//GetAllBooksWithTheirCovers();
+//void GetAllBooksWithTheirCovers()
+//{
+//    var booksWithCovers = _context.Books
+//        .Include(b => b.Cover)
+//        .ToList();
+//    booksWithCovers.ForEach(book =>
+//    {
+//        Console.WriteLine($"{book.Title} {book.Cover.DesignIdeas}");
+//    });
+
+//}
+
+
+//RetrieveAnArtistWithTheirCovers();
+
+//void RetrieveAnArtistWithTheirCovers()
+//{
+//    var artistWithCovers = _context.Artists
+//        .Include(a => a.Covers)
+//        .FirstOrDefault(a => a.ArtistId == 1);
+//}
+
+
+
+
+
 //ConnecNewArtistAndCoverObjects();
 //void ConnecNewArtistAndCoverObjects()
 //{
