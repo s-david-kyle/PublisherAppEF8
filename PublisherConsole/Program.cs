@@ -1,34 +1,54 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PublisherData;
 
-Console.WriteLine("Hello Publisher!");
 
 PubContext _context = new();
 
-GetAnAuthorWithTheirBooksWithCoversWithArtists();
-void GetAnAuthorWithTheirBooksWithCoversWithArtists()
+SimpleRawSQL();
+void SimpleRawSQL()
 {
-    var author = _context.Authors.AsNoTracking()
+    var authors = _context.Authors.FromSqlRaw("SELECT * FROM Authors")
         .Include(a => a.Books)
-        .ThenInclude(b => b.Cover)
-        .ThenInclude(c => c.Artists)
-        .FirstOrDefault(a => a.AuthorId == 1);
-
-    Console.WriteLine($"{author.FirstName} {author.LastName}");
-    author.Books.ForEach(book =>
+        .ToList();
+    authors.ForEach(author =>
     {
-        Console.WriteLine($"\t{book.Title} {book.PublishDate} {book.BasePrice}");
-        Console.WriteLine($"\t\t{book.Cover.DesignIdeas}");
-        book.Cover.Artists.ForEach(artist =>
+        Console.WriteLine($"{author.FirstName} {author.LastName}")
+        ; author.Books.ForEach(book =>
         {
-            Console.WriteLine($"\t\t{artist.FirstName} {artist.LastName}");
+            Console.WriteLine($"\t{book.Title} {book.PublishDate} {book.BasePrice}");
+
         });
+
+
     });
 }
 
 
-
 #region old code
+//GetAnAuthorWithTheirBooksWithCoversWithArtists();
+//void GetAnAuthorWithTheirBooksWithCoversWithArtists()
+//{
+//    var author = _context.Authors.AsNoTracking()
+//        .Include(a => a.Books)
+//        .ThenInclude(b => b.Cover)
+//        .ThenInclude(c => c.Artists)
+//        .FirstOrDefault(a => a.AuthorId == 1);
+
+//    Console.WriteLine($"{author.FirstName} {author.LastName}");
+//    author.Books.ForEach(book =>
+//    {
+//        Console.WriteLine($"\t{book.Title} {book.PublishDate} {book.BasePrice}");
+//        Console.WriteLine($"\t\t{book.Cover.DesignIdeas}");
+//        book.Cover.Artists.ForEach(artist =>
+//        {
+//            Console.WriteLine($"\t\t{artist.FirstName} {artist.LastName}");
+//        });
+//    });
+//}
+
+
+
+
 //GetAllBooksWithTheirCovers();
 //void GetAllBooksWithTheirCovers()
 //{
