@@ -1,40 +1,43 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PublisherData;
+﻿using PublisherData;
 
 
 PubContext _context = new();
 
-RawSqlStoredProc();
-void RawSqlStoredProc()
-{
-    var yearStart = 2020;
-    var yearEnd = 2022;
-    var authors = _context.Authors.FromSqlRaw("AuthorsPublishedinYearRange {0}, {1}", yearStart, yearEnd).ToList();
-    authors.ForEach(author =>
-    {
-        Console.WriteLine($"{author.FirstName} {author.LastName}");
-    });
-}
-
-InterpolatedSqlStoredProc();
-
-void InterpolatedSqlStoredProc()
-{
-    var yearStart = 2020;
-    var yearEnd = 2022;
-    var authors = _context.Authors
-        .FromSql($"AuthorsPublishedinYearRange {yearStart}, {yearEnd}")
-        .ToList();
-    authors.ForEach(author =>
-    {
-        Console.WriteLine($"{author.FirstName} {author.LastName}");
-    });
-
-}
-
 
 
 #region old code
+
+//RawSqlStoredProc();
+//void RawSqlStoredProc()
+//{
+//    var yearStart = 2020;
+//    var yearEnd = 2022;
+//    var authors = _context.Authors.FromSqlRaw("AuthorsPublishedinYearRange {0}, {1}", yearStart, yearEnd).ToList();
+//    authors.ForEach(author =>
+//    {
+//        Console.WriteLine($"{author.FirstName} {author.LastName}");
+//    });
+//}
+
+//InterpolatedSqlStoredProc();
+
+//void InterpolatedSqlStoredProc()
+//{
+//    var yearStart = 2020;
+//    var yearEnd = 2022;
+//    var authors = _context.Authors
+//        .FromSql($"AuthorsPublishedinYearRange {yearStart}, {yearEnd}")
+//        .ToList();
+//    authors.ForEach(author =>
+//    {
+//        Console.WriteLine($"{author.FirstName} {author.LastName}");
+//    });
+
+//}
+
+
+
+
 //SimpleRawSQL();
 //void SimpleRawSQL()
 //{
