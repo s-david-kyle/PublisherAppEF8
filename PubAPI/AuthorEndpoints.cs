@@ -19,6 +19,7 @@ public static class AuthorEndpoints
 
         group.MapGet("/{authorid}", async Task<Results<Ok<AuthorDTO>, NotFound>> (int authorid, PubContext db) =>
         {
+
             return await db.Authors.AsNoTracking()
                 .Where(model => model.AuthorId == authorid)
                 .Select(model => new AuthorDTO(model.AuthorId, model.FirstName, model.LastName))
