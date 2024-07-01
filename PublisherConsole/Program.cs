@@ -4,27 +4,58 @@ using PublisherData;
 
 PubContext _context = new();
 
-SimpleRawSQL();
-void SimpleRawSQL()
+RawSqlStoredProc();
+void RawSqlStoredProc()
 {
-    var authors = _context.Authors.FromSqlRaw("SELECT * FROM Authors")
-        .Include(a => a.Books)
-        .ToList();
+    var yearStart = 2020;
+    var yearEnd = 2022;
+    var authors = _context.Authors.FromSqlRaw("AuthorsPublishedinYearRange {0}, {1}", yearStart, yearEnd).ToList();
     authors.ForEach(author =>
     {
-        Console.WriteLine($"{author.FirstName} {author.LastName}")
-        ; author.Books.ForEach(book =>
-        {
-            Console.WriteLine($"\t{book.Title} {book.PublishDate} {book.BasePrice}");
-
-        });
-
-
+        Console.WriteLine($"{author.FirstName} {author.LastName}");
     });
 }
 
+InterpolatedSqlStoredProc();
+
+void InterpolatedSqlStoredProc()
+{
+    var yearStart = 2020;
+    var yearEnd = 2022;
+    var authors = _context.Authors
+        .FromSql($"AuthorsPublishedinYearRange {yearStart}, {yearEnd}")
+        .ToList();
+    authors.ForEach(author =>
+    {
+        Console.WriteLine($"{author.FirstName} {author.LastName}");
+    });
+
+}
+
+
 
 #region old code
+//SimpleRawSQL();
+//void SimpleRawSQL()
+//{
+//    var authors = _context.Authors.FromSqlRaw("SELECT * FROM Authors")
+//        .Include(a => a.Books)
+//        .ToList();
+//    authors.ForEach(author =>
+//    {
+//        Console.WriteLine($"{author.FirstName} {author.LastName}")
+//        ; author.Books.ForEach(book =>
+//        {
+//            Console.WriteLine($"\t{book.Title} {book.PublishDate} {book.BasePrice}");
+
+//        });
+
+
+//    });
+//}
+
+
+
 //GetAnAuthorWithTheirBooksWithCoversWithArtists();
 //void GetAnAuthorWithTheirBooksWithCoversWithArtists()
 //{
